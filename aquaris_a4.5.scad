@@ -79,19 +79,20 @@ difference() {
 	// Volume & Locking Buttons
 	translate ([w/2-tolerance/2-clip/2,h/2-70,0]) cube([2*thickness,42,1.5*d]);
 	// Decorative & Material-saving Holes
-	translate ([0,-10,0]){
-		difference() {
+	translate ([0,-9,0]){
+		intersection() {
 			union() {
-				cylinder(h=thickness,r=15,$fn=6);
-				for(ra=[0:60:360]){
-					rotate(ra,[0,0,1]) translate ([0,30,0]) cylinder(h=thickness,r=15,$fn=6);
+				for(i=[-2:1:3]){
+					translate ([0,i*30,0]){
+						cylinder(h=thickness,r=15,$fn=6);
+						for(ra=[60,300]){
+							rotate(ra,[0,0,1]) translate ([0,30,0]) cylinder(h=thickness,r=15,$fn=6);
+						}
+					}
 				}
 			}
-			// Bounding cubes
-			translate ([w/2-3*thickness,-h/2,0]) cube([10,h,10]);
-			translate ([-w/2-10+3*thickness,-h/2,0]) cube([10,h,10]);
-			translate ([-w/2-thickness, -h/2-thickness, 0]) cube([w+2*thickness,10,10]);
-			translate ([-w/2-thickness, h/2-25+thickness, 0]) cube([w+2*thickness,25,10]);
+			// Bounding space
+			translate ([0,0,-1]) aquarishape(w-16,90,10,2);
 		}
 	}
 }
