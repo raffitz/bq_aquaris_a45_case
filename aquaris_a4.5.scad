@@ -87,8 +87,11 @@ difference() {
 					rotate(ra,[0,0,1]) translate ([0,30,0]) cylinder(h=thickness,r=15,$fn=6);
 				}
 			}
+			// Bounding cubes
 			translate ([w/2-3*thickness,-h/2,0]) cube([10,h,10]);
 			translate ([-w/2-10+3*thickness,-h/2,0]) cube([10,h,10]);
+			translate ([-w/2-thickness, -h/2-thickness, 0]) cube([w+2*thickness,10,10]);
+			translate ([-w/2-thickness, h/2-25+thickness, 0]) cube([w+2*thickness,25,10]);
 		}
 	}
 }
