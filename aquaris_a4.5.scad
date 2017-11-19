@@ -66,11 +66,19 @@ difference() {
 			d + tolerance + thickness,
 			r - clip/ 2);
 	}
+	// Charging port and speakers
 	translate ([0,-h/2-tolerance - thickness,d+thickness]) rotate(-90,[1,0,0]){
-		aquarishape(w - 2*r,2*d,1.2*h,r);
+		aquarishape(w - 2*r - 4,2*d,0.6*h,r);
 	}
-	translate ([w/2-4-8.5,h/2-2-5.5,0]) aquarishape(17,11,thickness,1);
-	translate ([w/2-tolerance/2-clip/2,h/2-70,0]) cube([2*thickness,45,1.5*d]);
+	// Audio jack
+	translate ([0,h/2-tolerance - thickness,d+thickness]) rotate(-90,[1,0,0]){
+		aquarishape(w - 2*r - 26,2*d,0.6*h,r);
+	}
+	// Camera hole
+	translate ([w/2-4-8,h/2-2-5.5,0]) aquarishape(16,11,thickness,1);
+	// Volume & Locking Buttons
+	translate ([w/2-tolerance/2-clip/2,h/2-70,0]) cube([2*thickness,42,1.5*d]);
+	// Decorative & Material-saving Holes
 	translate ([0,-10,0]){
 		difference() {
 			union() {
