@@ -15,31 +15,9 @@ module aquarishape(width,height,depth,rounding){
 	shortwidth = width - 2*rounding;
 	shortheight = height - 2*rounding;
 
-	union() {
-		// Bottom parallelepiped:
-		translate([-shortwidth/2,-height/2,0]){
-			cube([shortwidth,rounding,depth]);
-		}
-
-		// Middle parallelepiped:
-		translate([-width/2,-shortheight/2,0]){
-			cube([width,shortheight,depth]);
-		}
-
-		// Top parellelepiped:
-		translate([-shortwidth/2,shortheight/2,0]){
-			cube([shortwidth,rounding,depth]);
-		}
-
-		// Rounded corners:
-		for(i=[-1,1]){
-			for(j=[-1,1]){
-				translate([i*shortwidth/2,j*shortheight/2,0]){
-					cylinder(h=depth,r=rounding,$fn=64);
-				}
-			}
-		}
-	}
+	linear_extrude(height = depth, center = false, convexity = 1, twist = 0, slices = 1, scale = 1.0)
+		offset(rounding,$fn=64)
+			square([shortwidth,shortheight],true);
 }
 
 // Case:
@@ -55,16 +33,22 @@ difference() {
 			d + tolerance + thickness,
 			r + (tolerance + thickness)/2);
 	}
-	// Case cavities
-	translate([0,0,thickness/2]){
-		aquarishape(w + tolerance,
-			h + tolerance,
-			d + tolerance,
-			r + tolerance/2);
-		aquarishape(w - clip,
-			h - clip,
-			d + tolerance + thickness,
-			r - clip/ 2);
+	// Decorative & Material-saving Holes
+	translate ([0,-9,0]){
+		intersection() {
+			union() {
+				for(i=[-2:1:3]){
+					translate ([0,i*30,-1]){
+						cylinder(h=thickness+2,r=15,$fn=6);
+						for(ra=[60,300]){
+							rotate(ra,[0,0,1]) translate ([0,30,0]) cylinder(h=thickness+2,r=15,$fn=6);
+						}
+					}
+				}
+			}
+			// Bounding space
+			translate ([0,0,-1]) aquarishape(w-16,90,10,3);
+		}
 	}
 	// Charging port and speakers
 	translate ([0,-h/2-tolerance - thickness,d+thickness]) rotate(-90,[1,0,0]){
@@ -78,21 +62,15 @@ difference() {
 	translate ([w/2-4-8,h/2-2-5.5,0]) aquarishape(16,11,thickness,1);
 	// Volume & Locking Buttons
 	translate ([w/2-tolerance/2-clip/2,h/2-70,0]) cube([2*thickness,42,1.5*d]);
-	// Decorative & Material-saving Holes
-	translate ([0,-9,0]){
-		intersection() {
-			union() {
-				for(i=[-2:1:3]){
-					translate ([0,i*30,0]){
-						cylinder(h=thickness,r=15,$fn=6);
-						for(ra=[60,300]){
-							rotate(ra,[0,0,1]) translate ([0,30,0]) cylinder(h=thickness,r=15,$fn=6);
-						}
-					}
-				}
-			}
-			// Bounding space
-			translate ([0,0,-1]) aquarishape(w-16,90,10,2);
-		}
+	// Case cavities
+	translate([0,0,thickness/2]){
+		aquarishape(w + tolerance,
+			h + tolerance,
+			d + tolerance,
+			r + tolerance/2);
+		aquarishape(w - clip,
+			h - clip,
+			d + tolerance + thickness,
+			r - clip/ 2);
 	}
 }
